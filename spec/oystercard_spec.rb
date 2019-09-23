@@ -13,7 +13,9 @@ describe Oystercard do
     end
 
     it 'limits the balance to 90' do
-      expect(oystercard.top_up(91)).to eq "card has balance limit of £#{Oystercard::MAX_BALANCE}"
+      max_balance = Oystercard::MAX_BALANCE
+      subject.top_up(max_balance)
+      expect(oystercard.top_up(1)).to eq "card has balance limit of £#{Oystercard::MAX_BALANCE}"
     end
   end
 end
