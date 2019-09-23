@@ -18,4 +18,11 @@ describe Oystercard do
       expect(oystercard.top_up(1)).to eq "card has balance limit of £#{Oystercard::MAX_BALANCE}"
     end
   end
+
+  describe "#deduct" do
+    it "deducts momney from card" do
+      oystercard.top_up(50)
+      expect{oystercard.deduct(10)}.to change{oystercard.balance}.by -10
+    end
+  end
 end
