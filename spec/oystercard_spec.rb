@@ -7,10 +7,13 @@ describe Oystercard do
   end
 
   describe '#add_money' do
-
-    it "adds amount to card" do
+    it 'adds amount to card' do
       oystercard.top_up(10)
       expect(oystercard.balance).to eq 10
+    end
+
+    it 'limits the balance to 90' do
+      expect(oystercard.top_up(91)).to eq "card has balance limit of £#{Oystercard::MAX_BALANCE}"
     end
   end
 end
