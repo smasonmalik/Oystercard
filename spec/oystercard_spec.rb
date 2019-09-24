@@ -25,4 +25,27 @@ describe Oystercard do
       expect{oystercard.deduct(10)}.to change{oystercard.balance}.by -10
     end
   end
+
+  describe "#in_journey?" do
+    it "creates a in_journey instance variable" do
+      expect(subject.in_journey?).to eq false
+    end
+  end
+
+  describe "#touch_in" do
+    it "touching in to set @journey to true" do
+      subject.top_up(40)
+      subject.touch_in
+      expect(subject.in_journey?).to eq true
+      end
+    end
+
+  describe "#touch_out" do
+    it "touching out sets in_journey to false" do
+      subject.top_up(40)
+      subject.touch_in
+      subject.touch_out
+      expect(subject.in_journey?).to be false
+    end
+  end
 end
