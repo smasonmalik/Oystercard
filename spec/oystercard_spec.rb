@@ -28,7 +28,7 @@ describe Oystercard do
 
   describe "#in_journey?" do
     it "creates a in_journey instance variable" do
-      expect(subject.in_journey?).to eq false
+      expect(subject).not_to be_in_journey
     end
   end
 
@@ -36,7 +36,7 @@ describe Oystercard do
     it "touching in to set @journey to true" do
       subject.top_up(40)
       subject.touch_in
-      expect(subject.in_journey?).to eq true
+      expect(subject).to be_in_journey
       end
     end
 
@@ -45,7 +45,7 @@ describe Oystercard do
       subject.top_up(40)
       subject.touch_in
       subject.touch_out
-      expect(subject.in_journey?).to be false
+      expect(subject).not_to be_in_journey
     end
   end
 end
