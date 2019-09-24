@@ -69,7 +69,15 @@ describe Oystercard do
       subject.touch_out
       expect(subject.entry_station).to eq nil
     end
+  end
 
+  describe "#history" do
+    it "stores the entry station to journey history" do
+      subject.top_up(10)
+      subject.touch_in('kings')
+      subject.touch_out
+      expect(subject.history).to include('kingsx')
+    end
   end
 
   context "insufficient balance to travel" do

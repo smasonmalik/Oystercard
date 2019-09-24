@@ -1,5 +1,5 @@
 class Oystercard
-  attr_reader :balance, :entry_station
+  attr_reader :balance, :entry_station, :history
 
   MAX_BALANCE = 90
   MIN_BALANCE = 1
@@ -7,6 +7,7 @@ class Oystercard
   def initialize
     @balance = 0
     @entry_station = nil
+    @history = {}
   end
 
   def in_journey?
@@ -22,6 +23,8 @@ class Oystercard
     raise "Balance below minimum of #{MIN_BALANCE}" unless @balance >= MIN_BALANCE
     # @in_journey = true
     @entry_station = station
+    # @history[:entry_station] = station 
+
   end
 
   def touch_out
