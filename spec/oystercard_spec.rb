@@ -19,12 +19,14 @@ describe Oystercard do
     end
   end
 
-  describe "#deduct" do
-    it "deducts momney from card" do
-      oystercard.top_up(50)
-      expect{oystercard.deduct(10)}.to change{oystercard.balance}.by -10
-    end
-  end
+  #deduct method no longer tested as it is a private method
+
+  # describe "#deduct" do
+  #   it "deducts momney from card" do
+  #     oystercard.top_up(50)
+  #     expect{oystercard.deduct(10)}.to change{oystercard.balance}.by -10
+  #   end
+  # end
 
   describe "#in_journey?" do
     it "creates a in_journey instance variable" do
@@ -47,6 +49,12 @@ describe Oystercard do
       subject.touch_out
       expect(subject).not_to be_in_journey
     end
+    it "deducts minimum fare from balance when touching out" do
+      subject.top_up(10)
+      subject.touch_in
+      expect{subject.touch_out}.to change{oystercard.balance}.by (-Oystercard::MIN_BALANCE)
+    end
+
   end
 
   context "insufficient balance to travel" do

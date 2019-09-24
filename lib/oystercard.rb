@@ -17,10 +17,6 @@ class Oystercard
     @balance + amount > MAX_BALANCE ? "card has balance limit of £#{MAX_BALANCE}" : @balance += amount
   end
 
-  def deduct(amount)
-    @balance -= amount
-  end
-
   def touch_in
     raise "Balance below minimum of #{MIN_BALANCE}" unless @balance >= MIN_BALANCE
     @in_journey = true
@@ -28,5 +24,15 @@ class Oystercard
 
   def touch_out
     @in_journey = false
+
+    deduct(MIN_BALANCE)
+
   end
+
+  private 
+
+  def deduct(amount)
+    @balance -= amount
+  end
+  
 end
