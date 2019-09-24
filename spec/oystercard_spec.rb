@@ -1,7 +1,10 @@
 require 'oystercard'
 
 describe Oystercard do
+
   subject(:oystercard) { described_class.new }
+  let(:station){ double :station }
+
   it 'checks money on card' do
     expect(oystercard.balance).to eq 0
   end
@@ -17,8 +20,13 @@ describe Oystercard do
       subject.top_up(max_balance)
       expect(oystercard.top_up(1)).to eq "card has balance limit of £#{Oystercard::MAX_BALANCE}"
     end
-  end
 
+    it 'stores an entry station' do
+      oystercard.top_up(10)
+      oystercard.touch_in(station)
+      expect(oystercard.entry_station).to eq station
+    end
+  end
   #deduct method no longer tested as it is a private method
 
   # describe "#deduct" do
