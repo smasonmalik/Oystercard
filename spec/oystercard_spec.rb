@@ -48,4 +48,10 @@ describe Oystercard do
       expect(subject).not_to be_in_journey
     end
   end
+
+  context "insufficient balance to travel" do
+    it "throws error if insufficent balance" do
+      expect { subject.touch_in } .to raise_error "Balance below minimum of #{Oystercard::MIN_BALANCE}"
+    end
+  end
 end
