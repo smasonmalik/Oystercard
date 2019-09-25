@@ -38,4 +38,31 @@ describe Journey do
       expect(journey.current_journey).to include(:exit_station => exit_station)
     end
   end
+
+  describe "journey_complete?" do
+    it "checks touching in and out completes a journey" do
+      journey.start(entry_station)
+      journey.finish(exit_station)
+      expect(journey.journey_complete?).to eq true
+    end
+
+    it "checks touching in and not out is an incomplete journey" do
+      journey.start(entry_station)
+      expect(journey.journey_complete?).to eq false
+    end
+  end
+
+
+  describe "#fare" do
+    it "deducts penalty fare if exit_station is empty" do
+      journey.start(entry_station)
+      expect(journey.fare).to eq Journey::PENALTY_FARE
+    end
+
+    it "deducts min_fare fare if journey is complete" do
+      journey.start(entry_station)
+      journey.finish(exit_station)
+      expect(journey.fare).to eq Journey::MIN_FARE
+    end
+  end
 end
