@@ -1,5 +1,5 @@
-# require 'journey'
-#
-# describe Journey do
-#
-# end
+require 'journey'
+
+describe Journey do
+
+end
