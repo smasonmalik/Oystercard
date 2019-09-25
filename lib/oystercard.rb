@@ -1,5 +1,5 @@
 class Oystercard
-  attr_reader :balance, :entry_station, :history, :exit_station, :journey
+  attr_reader :balance, :history, :journey, :in_journey
 
   MAX_BALANCE = 90
   MIN_BALANCE = 1

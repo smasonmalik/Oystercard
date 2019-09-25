@@ -40,25 +40,11 @@ describe Oystercard do
       subject.top_up(max_balance)
       expect(oystercard.top_up(1)).to eq "card has balance limit of £#{Oystercard::MAX_BALANCE}"
     end
-
-    it 'stores an entry station' do
-      oystercard.top_up(10)
-      oystercard.touch_in(entry_station)
-      expect(oystercard.entry_station).to eq entry_station
-    end
   end
-  #deduct method no longer tested as it is a private method
-
-  # describe "#deduct" do
-  #   it "deducts momney from card" do
-  #     oystercard.top_up(50)
-  #     expect{oystercard.deduct(10)}.to change{oystercard.balance}.by -10
-  #   end
-  # end
 
   describe "#in_journey?" do
     it "creates a in_journey instance variable" do
-      expect(subject).not_to be_in_journey
+      expect(subject.in_journey).to eq false
     end
   end
 
@@ -66,7 +52,7 @@ describe Oystercard do
     it "touching in to set @journey to true" do
       subject.top_up(40)
       subject.touch_in(entry_station)
-      expect(subject).to be_in_journey
+      expect(subject.in_journey).to eq true
       end
     end
 
@@ -75,19 +61,12 @@ describe Oystercard do
       subject.top_up(40)
       subject.touch_in(entry_station)
       subject.touch_out(exit_station)
-      expect(subject).not_to be_in_journey
+      expect(subject.in_journey).to eq false
     end
     it "deducts minimum fare from balance when touching out" do
       subject.top_up(10)
       subject.touch_in(entry_station)
       expect{subject.touch_out(exit_station)}.to change{oystercard.balance}.by (-Oystercard::MIN_BALANCE)
-    end
-
-    it "forgets a entry station upon checking out" do
-      subject.top_up(10)
-      subject.touch_in('kingsx')
-      subject.touch_out(exit_station)
-      expect(subject.entry_station).to eq nil
     end
   end
 
