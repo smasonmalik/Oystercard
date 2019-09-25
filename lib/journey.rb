@@ -1,5 +1,16 @@
 class Journey
 
+  attr_reader :current_journey, :in_journey
+
+  def initialize
+    @current_journey = {}
+    @in_journey = false
+  end
+
+  def start(entry_station)
+    @current_journey[:entry_station] = entry_station
+    @in_journey = true
+  end
 end
 
 
