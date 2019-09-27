@@ -12,11 +12,13 @@ class Journey
   end
 
   def start(entry_station)
+    @entry_station = entry_station
     @current_journey[:entry_station] = entry_station
     @in_journey = true
   end
 
   def finish(station)
+    @exit_station = station
     @current_journey[:exit_station] = station
     @in_journey = false
   end
@@ -29,6 +31,10 @@ class Journey
   end
 
   def fare
-    journey_complete? ? MIN_FARE : PENALTY_FARE
+    journey_complete? ? fare_calculator : PENALTY_FARE
+  end
+
+  def fare_calculator
+    1 + (@entry_station.zone - @exit_station.zone).abs
   end
 end

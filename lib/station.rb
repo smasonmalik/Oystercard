@@ -4,7 +4,7 @@ class Station
 
   def initialize(name:, zone:)
     @name = name
-    @zone = zone
+    @zone = zone.to_i 
   end
 
 end

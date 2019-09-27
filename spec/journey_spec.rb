@@ -2,8 +2,8 @@ require 'journey'
 
 describe Journey do
   subject(:journey) { described_class.new }
-  let(:entry_station) { double :entry_station }
-  let(:exit_station) { double :exit_station }
+  let(:entry_station) { double :entry_station, zone: 1 }
+  let(:exit_station) { double :exit_station, zone: 3 }
 
   describe '#initialize' do
     it 'initializes with an empty hash' do
@@ -59,11 +59,17 @@ describe Journey do
       expect(journey.fare).to eq Journey::PENALTY_FARE
     end
 
-    it "deducts min_fare fare if journey is complete" do
+    it "deducts the correct calculated fare if journey is complete" do
       journey.start(entry_station)
       journey.finish(exit_station)
-      expect(journey.fare).to eq Journey::MIN_FARE
+      fare = (exit_station.zone - entry_station.zone) + 1
+      expect(journey.fare).to eq fare
     end
+    # it "deducts min_fare fare if journey is complete" do
+    #   journey.start(entry_station)
+    #   journey.finish(exit_station)
+    #   expect(journey.fare).to eq Journey::MIN_FARE
+    # end
   end
 
   describe "#in_journey?" do
