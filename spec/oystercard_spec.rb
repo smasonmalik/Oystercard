@@ -53,7 +53,16 @@ describe Oystercard do
       subject.touch_in(entry_station)
       allow(journey).to receive(:finish)
       allow(journey).to receive(:current_journey)
-      expect{subject.touch_out(exit_station)}.to change{oystercard.balance}.by (-Oystercard::MIN_BALANCE)
+      allow(journey).to receive(:fare) {Journey::MIN_FARE}
+      expect{subject.touch_out(exit_station)}.to change{oystercard.balance}.by (-Journey::MIN_FARE)
+    end
+
+    it "deducts penalty fare from balance when no touch in" do
+      subject.top_up(10)
+      allow(journey).to receive(:finish)
+      allow(journey).to receive(:current_journey)
+      allow(journey).to receive(:fare) {Journey::PENALTY_FARE}
+      expect{subject.touch_out(exit_station)}.to change{oystercard.balance}.by (-Journey::PENALTY_FARE)
     end
 
     it "stores journey to history" do
@@ -62,6 +71,7 @@ describe Oystercard do
       allow(journey).to receive(:finish).with(exit_station)
       allow(journey).to receive(:current_journey) { journey_hash }
       subject.touch_in(entry_station)
+      allow(journey).to receive(:fare) {Journey::MIN_FARE}
       subject.touch_out(exit_station)
       expect(subject.history).to include(journey_hash)
     end

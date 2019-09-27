@@ -77,4 +77,6 @@ describe Journey do
     subject.finish(exit_station)
     expect(subject.in_journey).to eq false
   end
+
+  describe
 end

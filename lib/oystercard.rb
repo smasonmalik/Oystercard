@@ -26,7 +26,7 @@ class Oystercard
     @journey.finish(station)
     @history << @journey.current_journey
 
-    deduct(MIN_BALANCE)
+    deduct(@journey.fare)
   end
 
 
