@@ -65,4 +65,16 @@ describe Journey do
       expect(journey.fare).to eq Journey::MIN_FARE
     end
   end
+
+  describe "#in_journey?" do
+    it "creates a in_journey instance variable" do
+      expect(subject.in_journey).to eq false
+    end
+  end
+
+  it "finshing jourbney sets in_journey to false" do
+    subject.start(entry_station)
+    subject.finish(exit_station)
+    expect(subject.in_journey).to eq false
+  end
 end

@@ -2,10 +2,18 @@ require 'oystercard'
 
 describe Oystercard do
 
-  subject(:oystercard) { described_class.new }
+  # Create doubles of journey and Journey class
+  let(:journey) { double :a_single_journey }
+  # let(:journey_class) { double :journey_class, new: journey }
+
+  subject(:oystercard) { described_class.new(journey) }
   let(:entry_station){ double :station }
   let(:exit_station){ double :station }
-  let(:journey){ {:entry_station => entry_station, :exit_station => exit_station} }
+
+
+  # Expected contents of journey.history after a complete journey
+  let(:journey_hash){ {:entry_station => entry_station, :exit_station => exit_station} }
+
 
   it 'checks money on card' do
     expect(oystercard.balance).to eq 0
@@ -15,12 +23,7 @@ describe Oystercard do
     expect(subject.history).to be_empty
   end
 
-  it "stores journey to history" do
-    subject.top_up(10)
-    subject.touch_in(entry_station)
-    subject.touch_out(exit_station)
-    expect(subject.history).to include(journey)
-  end
+
 
   describe '#add_money' do
     it 'adds amount to card' do
@@ -35,11 +38,6 @@ describe Oystercard do
     end
   end
 
-  describe "#in_journey?" do
-    it "creates a in_journey instance variable" do
-      expect(subject.in_journey).to eq false
-    end
-  end
 
   describe "#touch_in" do
     it "throws error if insufficent balance" do
@@ -48,16 +46,24 @@ describe Oystercard do
   end
 
   describe "#touch_out" do
-    it "touching out sets in_journey to false" do
-      subject.top_up(40)
-      subject.touch_in(entry_station)
-      subject.touch_out(exit_station)
-      expect(subject.in_journey).to eq false
-    end
+
     it "deducts minimum fare from balance when touching out" do
       subject.top_up(10)
+      allow(journey).to receive(:start)
       subject.touch_in(entry_station)
+      allow(journey).to receive(:finish)
+      allow(journey).to receive(:current_journey)
       expect{subject.touch_out(exit_station)}.to change{oystercard.balance}.by (-Oystercard::MIN_BALANCE)
+    end
+
+    it "stores journey to history" do
+      subject.top_up(10)
+      allow(journey).to receive(:start).with(entry_station)
+      allow(journey).to receive(:finish).with(exit_station)
+      allow(journey).to receive(:current_journey) { journey_hash }
+      subject.touch_in(entry_station)
+      subject.touch_out(exit_station)
+      expect(subject.history).to include(journey_hash)
     end
   end
 end
